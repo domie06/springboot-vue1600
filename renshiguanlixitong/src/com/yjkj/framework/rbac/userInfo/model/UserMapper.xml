@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yjkj.framework.rbac.userInfo.dao.UserInfoDao">
+	<resultMap type="com.yjkj.framework.rbac.userInfo.model.UserInfo"
+		id="userMap">
+		<association property="roleInfo" javaType="com.yjkj.framework.rbac.roleInfo.model.RoleInfo" column="roleId" select="com.yjkj.framework.rbac.roleInfo.dao.RoleInfoDao.queryOne"></association>
+		<association property="recommend" javaType="com.yjkj.framework.rbac.recommend.model.Recommend" column="recommendId" select="com.yjkj.framework.rbac.recommend.dao.RecommendDao.informationLoadOne"></association>
+		<collection property="functionRoleRel" ofType="com.yjkj.framework.rbac.functionRoleInfo.model.FunctionRoleRel" column="roleId" select="com.yjkj.framework.rbac.functionRoleInfo.dao.FunctionRoleRelDao.query"></collection>
+	</resultMap>
+
+<select id="loginUser" resultMap="userMap">
+	SELECT
+		*
+	FROM
+		User_info
+	<where>
+		loginName=#{loginName}
+		AND
+		loginPassword=#{loginPassword}
+	</where>
+</select>
+<insert id="userAdd">
+
+	INSERT INTO
+		User_info
+	<trim prefix="(" suffix=")" suffixOverrides=",">
+		<if test="id!=null and id!=''">
+			id,
+		</if>
+		<if test="loginName!=null and loginName!=''">
+			loginName,
+		</if>
+		<if test="loginPassword!=null and loginPassword!=''">
+			loginPassword,
+		</if>
+		<if test="userName!=null and userName!=''">
+			userName,
+		</if>
+		<if test="roleId!=null and roleId!=''">
+			roleId,
+		</if>
+		<if test="address!=null and address!=''">
+			address,
+		</if>
+		<if test="age!=null and age!=''">
+			age,
+		</if>
+		<if test="email!=null and email!=''">
+			email,
+		</if>
+		<if test="house_phone!=null and house_phone!=''">
+			house_phone,
+		</if>
+		<if test="education!=null and education!=''">
+			education,
+		</if>
+		<if test="phoneNo!=null and phoneNo!=''">
+			phoneNo,
+		</if>
+		<if test="selfId!=null and selfId!=''">
+			selfId,
+		</if>
+		<if test="recommendId!=null and recommendId!=''">
+			recommendId,
+		</if>
+		<if test="remark!=null and remark!=''">
+			remark,
+		</if>
+		<if test="createDate!=null and createDate!=''">
+			createDate,
+		</if>
+		<if test="flag!=null and flag!=''">
+			flag,
+		</if>
+	</trim>
+	VALUES
+	<trim prefix="(" suffix=")" suffixOverrides=",">
+		<if test="id!=null and id!=''">
+			#{id},
+		</if>
+		<if test="loginName!=null and loginName!=''">
+			#{loginName},
+		</if>
+		<if test="loginPassword!=null and loginPassword!=''">
+			#{loginPassword},
+		</if>
+		<if test="userName!=null and userName!=''">
+			#{userName},
+		</if>
+		<if test="roleId!=null and roleId!=''">
+			#{roleId},
+		</if>
+		<if test="address!=null and address!=''">
+			#{address},
+		</if>
+		<if test="age!=null and age!=''">
+			#{age},
+		</if>
+		<if test="email!=null and email!=''">
+			#{email},
+		</if>
+		<if test="house_phone!=null and house_phone!=''">
+			#{house_phone},
+		</if>
+		<if test="education!=null and education!=''">
+			#{education},
+		</if>
+		<if test="phoneNo!=null and phoneNo!=''">
+			#{phoneNo},
+		</if>
+		<if test="selfId!=null and selfId!=''">
+			#{selfId},
+		</if>
+		<if test="recommendId!=null and recommendId!=''">
+			#{recommendId},
+		</if>
+		<if test="remark!=null and remark!=''">
+			#{remark},
+		</if>
+		<if test="createDate!=null and createDate!=''">
+			#{createDate},
+		</if>
+		<if test="flag!=null and flag!=''">
+			#{flag},
+		</if>
+	</trim>
+	
+</insert>
+<select id="queryOne" resultMap="userMap">
+	SELECT
+		*
+	FROM
+		User_info
+	<where>
+		id=#{id}
+	</where>
+</select>
+<select id="queryAll" resultMap="userMap">
+	SELECT
+		*
+	FROM
+		User_info
+</select>
+<select id="Query" resultMap="userMap" parameterType="java.util.HashMap">
+	SELECT
+		*
+	FROM
+		User_info
+	<where>
+	<if test="user.userName != null and user.userName != ''">
+			AND userName LIKE CONCAT(CONCAT('%', #{user.userName}), '%')
+		</if>
+	</where>
+	LIMIT 
+	#{pager.offSet},#{pager.pageSize}
+</select>
+<select id="queryCount" resultType="int">
+	SELECT
+		COUNT(*)
+	FROM
+		User_info
+	<where>
+	<if test="userName != null and userName != ''">
+			AND userName LIKE CONCAT(CONCAT('%', #{userName}), '%')
+		</if>
+	</where>
+</select>
+
+
+
+<delete id="userDelete">
+		DELETE
+		FROM
+			User_info
+		WHERE
+			id=#{id}
+</delete>
+
+<update id="userUpdate" parameterType="com.yjkj.framework.rbac.userInfo.model.UserInfo">
+		UPDATE
+		User_info
+		<set>
+		<if test="loginName!=null and loginName!=''">
+			loginName=#{loginName},
+		</if>
+		<if test="loginPassword!=null and loginPassword!=''">
+			loginPassword=#{loginPassword},
+		</if>
+		<if test="userName!=null and userName!=''">
+			userName=#{userName},
+		</if>
+		<if test="roleId!=null and roleId!=''">
+			roleId=#{roleId},
+		</if>
+		<if test="phoneNo!=null and phoneNo!=''">
+			phoneNo=#{phoneNo},
+		</if>
+		<if test="selfId!=null and selfId!=''">
+			selfId=#{selfId},
+		</if>
+		<if test="address!=null and address!=''">
+			address=#{address},
+		</if>
+		<if test="age!=null and age!=''">
+			age=#{age},
+		</if>
+		<if test="email!=null and email!=''">
+			email=#{email},
+		</if>
+		<if test="house_phone!=null and house_phone!=''">
+			house_phone=#{house_phone},
+		</if>
+		<if test="education!=null and education!=''">
+			education=#{education},
+		</if>
+		<if test="phoneNo!=null and phoneNo!=''">
+			phoneNo=#{phoneNo},
+		</if>
+		<if test="recommendId!=null and recommendId!=''">
+			recommendId=#{recommendId},
+		</if>
+		<if test="remark!=null and remark!=''">
+			remark=#{remark},
+		</if>
+		<if test="createDate!=null and createDate!=''">
+			createDate=#{createDate},
+		</if>
+		<if test="flag!=null and flag!=''">
+			flag=#{flag},
+		</if>
+		</set>
+		WHERE id=#{id}
+</update>
+</mapper>

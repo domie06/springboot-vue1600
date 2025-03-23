@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.yjkj.framework.rbac.attence.dao.AttenceDao">
+	<resultMap type="com.yjkj.framework.rbac.attence.model.Attence" id="attenceMap">
+	<association property="userInfo" javaType="com.yjkj.framework.rbac.userInfo.model.UserInfo" column="user_id" select="com.yjkj.framework.rbac.userInfo.dao.UserInfoDao.queryOne"></association>
+	</resultMap>
+	<select id="informationLoad" parameterType="java.util.HashMap"
+		resultMap="attenceMap">
+		SELECT
+		*
+		FROM
+		attence 
+		<where>
+			is_delete = '0'
+			<if test="attence.user_id != null and attence.user_id != ''">
+				AND user_id = #{attence.user_id}
+			</if>
+		</where>
+		ORDER BY
+		id
+		DESC
+		LIMIT
+		#{pager.offSet},#{pager.pageSize}
+	</select>
+	<select id="informationLoadAll"
+		resultMap="attenceMap">
+		SELECT
+		*
+		FROM
+		attence 
+		<where>
+			is_delete = '0'
+		</where>
+		ORDER BY
+		id
+		DESC
+	</select>
+	<select id="check"
+		resultMap="attenceMap">
+		SELECT
+		*
+		FROM
+		attence 
+		<where>
+			is_delete = '0'
+			AND user_id=#{user_id}
+			AND attence_date=#{attence_date}
+		</where>
+		ORDER BY
+		id
+		DESC
+	</select>
+	<select id="count" resultType="int">
+		SELECT
+		COUNT(*)
+		FROM
+		attence
+		<where>
+			is_delete = '0'
+			<if test="user_id != null and user_id != ''">
+				AND user_id = #{user_id}
+			</if>
+		</where>
+	</select>
+	<select id="informationLoadOne"  resultMap="attenceMap">
+		SELECT
+		*
+		FROM
+		attence
+		WHERE
+		id=#{id}
+	</select>
+
+
+	<delete id="informationDelete" >
+		UPDATE
+		attence
+		SET
+		is_delete = '1'
+		WHERE id=#{id}
+	</delete>
+
+
+	<insert id="informationAdd" parameterType="com.yjkj.framework.rbac.attence.model.Attence">
+		INSERT INTO
+		attence
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="user_id != null">
+				user_id,
+			</if>
+			<if test="attence_date != null">
+				attence_date,
+			</if>
+			<if test="start_time != null">
+				start_time,
+			</if>
+			<if test="end_time != null">
+				end_time,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+			<if test="createtime != null">
+				createtime,
+			</if>
+			<if test="is_delete != null">
+				is_delete,
+			</if>
+			<if test="flag != null">
+				flag,
+			</if>
+		</trim>
+		VALUES
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="user_id != null">
+				#{user_id},
+			</if>
+			<if test="attence_date != null">
+				#{attence_date},
+			</if>
+			<if test="start_time != null">
+				#{start_time},
+			</if>
+			<if test="end_time != null">
+				#{end_time},
+			</if>
+			<if test="remark != null">
+				#{remark},
+			</if>
+			<if test="createtime != null">
+				#{createtime},
+			</if>
+			<if test="is_delete != null">
+				#{is_delete},
+			</if>
+			<if test="flag != null">
+				#{flag},
+			</if>
+		</trim>
+	</insert>
+	<update id="informationUpdate" parameterType="com.yjkj.framework.rbac.attence.model.Attence">
+		UPDATE
+		attence
+		<set>
+			<if test="user_id != null">
+				user_id=#{user_id},
+			</if>
+			<if test="start_time != null">
+				start_time=#{start_time},
+			</if>
+			<if test="attence_date != null">
+				attence_date=#{attence_date},
+			</if>
+			<if test="end_time != null">
+				end_time=#{end_time},
+			</if>
+			<if test="remark != null">
+				remark=#{remark},
+			</if>
+			<if test="createtime != null">
+				createtime=#{createtime},
+			</if>
+			<if test="is_delete != null">
+				is_delete=#{is_delete},
+			</if>
+			<if test="flag != null">
+				flag=#{flag},
+			</if>
+		</set>
+		WHERE id=#{id}
+	</update>
+</mapper>

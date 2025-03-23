@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.yjkj.framework.rbac.wage.dao.WageDao">
+	<resultMap type="com.yjkj.framework.rbac.wage.model.Wage" id="wageMap">
+	<association property="userInfo" javaType="com.yjkj.framework.rbac.userInfo.model.UserInfo" column="user_id" select="com.yjkj.framework.rbac.userInfo.dao.UserInfoDao.queryOne"></association>
+	</resultMap>
+	<select id="informationLoad" parameterType="java.util.HashMap"
+		resultMap="wageMap">
+		SELECT
+		*
+		FROM
+		wage 
+		<where>
+			is_delete = '0'
+			<if test="wage.user_id!=null and wage.user_id!=''">
+				AND user_id=#{wage.user_id}
+			</if>
+			<if test="wage.recommend_id!=null and wage.recommend_id!=''">
+				AND user_id in(SELECT id FROM user_info WHERE recommendId=#{wage.recommend_id})
+			</if>
+		</where>
+		ORDER BY
+		id
+		DESC
+		LIMIT
+		#{pager.offSet},#{pager.pageSize}
+	</select>
+	<select id="informationLoadAll"
+		resultMap="wageMap">
+		SELECT
+		*
+		FROM
+		wage 
+		<where>
+			is_delete = '0'
+		</where>
+		ORDER BY
+		id
+		DESC
+	</select>
+	<select id="count" resultType="int">
+		SELECT
+		COUNT(*)
+		FROM
+		wage
+		<where>
+			is_delete = '0'
+			<if test="user_id!=null and user_id!=''">
+				AND user_id=#{user_id}
+			</if>
+			<if test="recommend_id!=null and recommend_id!=''">
+				AND user_id in(SELECT id FROM user_info WHERE recommendId=#{recommend_id})
+			</if>
+		</where>
+	</select>
+	<select id="informationLoadOne"  resultMap="wageMap">
+		SELECT
+		*
+		FROM
+		wage
+		WHERE
+		id=#{id}
+	</select>
+
+
+	<delete id="informationDelete" >
+		UPDATE
+		wage
+		SET
+		is_delete = '1'
+		WHERE id=#{id}
+	</delete>
+
+
+	<insert id="informationAdd" parameterType="com.yjkj.framework.rbac.wage.model.Wage">
+		INSERT INTO
+		wage
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id!=null">
+				id,
+			</if>
+			<if test="user_id!=null">
+				user_id,
+			</if>
+			<if test="month!=null">
+				month,
+			</if>
+			<if test="base!=null">
+				base,
+			</if>
+			<if test="bonus!=null">
+				bonus,
+			</if>
+			<if test="overtime!=null">
+				overtime,
+			</if>
+			<if test="late!=null">
+				late,
+			</if>
+			<if test="old_age!=null">
+				old_age,
+			</if>
+			<if test="medical!=null">
+				medical,
+			</if>
+			<if test="house!=null">
+				house,
+			</if>
+			<if test="tax!=null">
+				tax,
+			</if>
+			<if test="income!=null">
+				income,
+			</if>
+			<if test="createtime!=null">
+				createtime,
+			</if>
+			<if test="flag!=null">
+				flag,
+			</if>
+		</trim>
+		VALUES
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id!=null">
+				#{id},
+			</if>
+			<if test="user_id!=null">
+				#{user_id},
+			</if>
+			<if test="month!=null">
+				#{month},
+			</if>
+			<if test="base!=null">
+				#{base},
+			</if>
+			<if test="bonus!=null">
+				#{bonus},
+			</if>
+			<if test="overtime!=null">
+				#{overtime},
+			</if>
+			<if test="late!=null">
+				#{late},
+			</if>
+			<if test="old_age!=null">
+				#{old_age},
+			</if>
+			<if test="medical!=null">
+				#{medical},
+			</if>
+			<if test="house!=null">
+				#{house},
+			</if>
+			<if test="tax!=null">
+				#{tax},
+			</if>
+			<if test="income!=null">
+				#{income},
+			</if>
+			<if test="createtime!=null">
+				#{createtime},
+			</if>
+			<if test="flag!=null">
+				#{flag},
+			</if>
+		</trim>
+	</insert>
+	<update id="informationUpdate" parameterType="com.yjkj.framework.rbac.wage.model.Wage">
+		UPDATE
+		wage
+		<set>
+			<if test="id!=null">
+				id=#{id},
+			</if>
+			<if test="user_id!=null">
+				user_id=#{user_id},
+			</if>
+			<if test="month!=null">
+				month=#{month},
+			</if>
+			<if test="base!=null">
+				base=#{base},
+			</if>
+			<if test="bonus!=null">
+				bonus=#{bonus},
+			</if>
+			<if test="overtime!=null">
+				overtime=#{overtime},
+			</if>
+			<if test="late!=null">
+				late=#{late},
+			</if>
+			<if test="old_age!=null">
+				old_age=#{old_age},
+			</if>
+			<if test="medical!=null">
+				medical=#{medical},
+			</if>
+			<if test="house!=null">
+				house=#{house},
+			</if>
+			<if test="tax!=null">
+				tax=#{tax},
+			</if>
+			<if test="income!=null">
+				income=#{income},
+			</if>
+			<if test="flag!=null">
+				flag=#{flag},
+			</if>
+		</set>
+		WHERE id=#{id}
+	</update>
+</mapper>
